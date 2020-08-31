@@ -21,12 +21,12 @@ class UninformedSearchSolver:
         self.openlist.append(current)
 
     def check_inclusive(self, s):
-    #TODO your code start here
+        #TODO your code start here
        
        
        
        
-    #TODO your code end here
+        #TODO your code end here
 
 
     """
@@ -36,12 +36,12 @@ class UninformedSearchSolver:
      * the blank tile is represent by '0'
     """
     def state_walk(self):
-    #TODO your code start here
+        #TODO your code start here
+
        
        
        
-       
-    #TODO your code end here
+        #TODO your code end here
 
 
 
