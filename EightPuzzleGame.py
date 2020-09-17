@@ -15,7 +15,7 @@ from EightPuzzleGame_InformedSearch import InformedSearchSolver
 
 
 class EightPuzzleGame:
-    titles = 8
+    tiles = 8
     def __init__(self, initial=[], goal=[], tiles=8):
         self.initial = initial
         self.goal = goal
@@ -37,8 +37,10 @@ class EightPuzzleGame:
         UIS_solver = UninformedSearchSolver(init, goal)
         UIS_solver.run()
 
+        ''' Informed search, will build this out and test later
         IS_solver = InformedSearchSolver(init, goal)
         IS_solver.run()
+        '''
 
 
 # start the puzzle game

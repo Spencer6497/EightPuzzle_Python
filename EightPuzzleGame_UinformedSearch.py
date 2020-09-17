@@ -21,12 +21,34 @@ class UninformedSearchSolver:
         self.openlist.append(current)
 
     def check_inclusive(self, s):
-        #TODO your code start here
-       
-       
-       
-       
-        #TODO your code end here
+        numOpen = 0
+        numClosed = 0
+        returnValue = [-1, -1]
+
+        # If s is in the open list
+        for i in self.openlist:
+            if i.equals(s):
+                numOpen = 1
+                returnValue[1] = self.openlist.index(i)
+                break
+
+        # If s is in the closed list
+        for i in self.closed:
+            if i.equals(s):
+                numClosed = 1
+                returnValue[1] = self.closed.index(i)
+                break
+
+        # If child is not in either list
+        if numOpen == 0 and numClosed == 0:
+            returnValue[0] = 1
+        # If child is already in the open list
+        elif numOpen == 1 and numClosed == 0:
+            returnValue[0] = 2
+        # If child is already in the closed list
+        elif numOpen == 1 and numClosed == 1:
+            returnValue[0] = 3
+        return returnValue
 
 
     """
@@ -36,14 +58,35 @@ class UninformedSearchSolver:
      * the blank tile is represent by '0'
     """
     def state_walk(self):
-        #TODO your code start here
+        # add closed state
+        self.closed.append(self.current)
+        self.openlist.remove(self.current)
+        # Move to next state
+        walk_state = self.current.tile_seq
+        row = 0
+        col = 0
 
-       
-       
-       
-        #TODO your code end here
+        for i in range(len(walk_state)):
+            for j in range(len(walk_state[i])):
+                if walk_state[i, j] == 0:
+                    row = i
+                    col = j
+                    break
+
+        self.depth += 1
+
+        # Move up blank space
+        if (row - 1) >= 0:
 
 
+        # Move down blank space
+        if (row + 1) < len(walk_state):
+
+        # Move left blank space
+        if (col - 1) >= 0:
+
+        # Move right blank space
+        if (col + 1) < len(walk_state):
 
 
     # Check the following to make it work properly
