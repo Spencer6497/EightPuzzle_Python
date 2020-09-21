@@ -76,10 +76,25 @@ class UninformedSearchSolver:
         self.depth += 1
 
         # Move up blank space
+        temp = [len(self.current.tile_seq)][len(self.current.tile_seq[0])] # Temp 2d array with same dimensions as current.tile_seq
+
+        # Deep copy of the entire array
         if (row - 1) >= 0:
-            temp = self.current.tile_seq[row-1][col]
-            self.current.tile_seq[row-1][col] = 0
-            self.current.tile_seq[row][col] = temp
+            for i in range(len(self.current.tile_seq)):
+                for j in range(len(self.current.tile_seq[i])):
+                    temp[i][j] = self.current.tile_seq[i]
+                    j += 1
+                temp[i] = self.current.tile_seq
+                i += 1
+
+            tileToSwitch = temp[row-1][col] # The value where the blank tile is in the current state
+            temp[row-1][col] = self.current.tile_seq[row][col] # Moving the blank tile up by placing 0 in row-1
+            temp[row][col] = tileToSwitch # Replacing the spot where the blank tile was with the value right above
+
+
+            # temp = self.current.tile_seq[row-1][col]
+            # self.current.tile_seq[row-1][col] = 0
+            # self.current.tile_seq[row][col] = temp
 
         # Move down blank space
         if (row + 1) < len(walk_state):
