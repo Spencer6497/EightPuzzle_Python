@@ -77,17 +77,27 @@ class UninformedSearchSolver:
 
         # Move up blank space
         if (row - 1) >= 0:
-
+            temp = self.current.tile_seq[row-1][col]
+            self.current.tile_seq[row-1][col] = 0
+            self.current.tile_seq[row][col] = temp
 
         # Move down blank space
         if (row + 1) < len(walk_state):
+            temp = self.current.tile_seq[row+1][col]
+            self.current.tile_seq[row+1][col] = 0
+            self.current.tile_seq[row][col] = temp
 
         # Move left blank space
         if (col - 1) >= 0:
+            temp = self.current.tile_seq[row][col-1]
+            self.current.tile_seq[row][col-1] = 0
+            self.current.tile_seq[row][col] = temp
 
         # Move right blank space
         if (col + 1) < len(walk_state):
-
+            temp = self.current.tile_seq[row][col+1]
+            self.current.tile_seq[row][col+1] = 0
+            self.current.tile_seq[row][col] = temp
 
     # Check the following to make it work properly
     def run(self):
@@ -99,7 +109,8 @@ class UninformedSearchSolver:
 
         while not self.current.equals(self.goal):
             self.state_walk()
-            print(self.current.tile_seq)
+            print( "Current tile_seq = \n" )
+            print( self.current.tile_seq )
             path += 1
 
         print("It took ", path, " iterations")

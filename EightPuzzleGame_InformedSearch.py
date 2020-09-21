@@ -1,5 +1,6 @@
 import numpy as np
 from EightPuzzleGame_State import State
+
 '''
 This class implement the Best-First-Search (BFS) algorithm along with the Heuristic search strategies
 
@@ -13,6 +14,7 @@ We define heuristic evaluations to reduce the states that need to be checked eve
 Evaluation function is used to express the quality of informedness of a heuristic algorithm. 
 
 '''
+
 
 class InformedSearchSolver:
     current = State()
@@ -89,7 +91,12 @@ class InformedSearchSolver:
         ''' The following program is used to do the state space walk '''
         # ↑ move up
         if (row - 1) >= 0:
-            #TODO your code start here
+            # TODO your code start here
+            self.current # What do I do with this??
+            temp = np.zeros( len(self.tile_seq) * len(self.tile_seq[0]) )
+            for i in self.current.tile_seq:
+                temp[ i.index() ] = i
+                print( temp )
             """
              *get the 2d array of current 
              *define a temp 2d array and loop over current.tile_seq
@@ -114,12 +121,11 @@ class InformedSearchSolver:
              *add the child to open
              *end;
             """
-            #TODO your code end here
-            
+            # TODO your code end here
 
         # ↓ move down
         if (row + 1) < len(walk_state):
-            #TODO your code start here
+            # TODO your code start here
             """
              *get the 2d array of current 
              *define a temp 2d array and loop over current.tile_seq
@@ -144,11 +150,11 @@ class InformedSearchSolver:
              *add the child to open
              *end;
             """
-            #TODO your code end here
+            # TODO your code end here
 
         # ← move left
         if (col - 1) >= 0:
-            #TODO your code start here
+            # TODO your code start here
             """
              *get the 2d array of current 
              *define a temp 2d array and loop over current.tile_seq
@@ -173,11 +179,11 @@ class InformedSearchSolver:
              *add the child to open
              *end;
             """
-            #TODO your code end here
+            # TODO your code end here
 
         # → move right
         if (col + 1) < len(walk_state):
-            #TODO your code start here
+            # TODO your code start here
             """
              *get the 2d array of current 
              *define a temp 2d array and loop over current.tile_seq
@@ -202,7 +208,7 @@ class InformedSearchSolver:
              *add the child to open
              *end;
             """
-            #TODO your code end here
+            # TODO your code end here
 
         # sort the open list first by h(n) then g(n)
         self.openlist.sort(key=self.sortFun)
@@ -228,17 +234,16 @@ class InformedSearchSolver:
 
         # (1) Tiles out of place
         h1 = 0
-        #TODO your code start here
+        # TODO your code start here
         """
          *loop over the curr_seq
          *check the every entry in curr_seq with goal_seq
         """
-        #TODO your code end here
-        
+        # TODO your code end here
 
         # (2) Sum of distances out of place
         h2 = 0
-        #TODO your code start here
+        # TODO your code start here
         """
          *loop over the goal_seq and curr_seq in nested way
          *locate the entry which has the same value in 
@@ -247,12 +252,11 @@ class InformedSearchSolver:
          *of curr_row-goal_row and curr_col-goal_col
          *absoulte value can be calculated by abs(...)
         """
-        #TODO your code end here
-        
-        
+        # TODO your code end here
+
         # (3) 2 x the number of direct tile reversals
         h3 = 0
-        #TODO your code start here
+        # TODO your code start here
         """
          *loop over the curr_seq
          *use a Γ(gamma)shap slider to walk throught curr_seq and goal_seq
@@ -267,15 +271,14 @@ class InformedSearchSolver:
          *    4             4
          *reversal is 1 2 and 2 1
         """
-        #TODO your code end here
+        # TODO your code end here
 
         h3 *= 2
 
         # set the heuristic value for current state
         current.weight = current.depth + h1 + h2 + h3
 
-
-    # You can choose to print all the states on the search path, or just the start and goal state 
+    # You can choose to print all the states on the search path, or just the start and goal state
     def run(self):
         # output the start state
         print("start state !!!!!")
@@ -294,3 +297,4 @@ class InformedSearchSolver:
         target = self.goal.tile_seq
         print(target)
         print("goal state !!!!!")
+
