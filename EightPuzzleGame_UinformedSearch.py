@@ -76,44 +76,59 @@ class UninformedSearchSolver:
 
         self.depth += 1
 
-        # Move up blank space
         # Shallow copy of current.tile_seq
         temp = self.current.tile_seq
 
+        """
+        REWRITE TO EXPAND ON LEFTMOST CHILD ACCORDING TO
+        BFS ALGORITHM
+        
+        EVERY CHILD IS AN ACTION. EITHER UP, DOWN, LEFT, RIGHT.
+        """
+
+
+        # Move up blank space
         if (row - 1) >= 0:
             tiletoswitch = temp[row-1][col]  # The value where the blank tile is in the current state
             temp[row-1][col] = self.current.tile_seq[row][col]  # Moving the blank tile up by placing 0 in row-1
             temp[row][col] = tiletoswitch  # Replacing the spot where the blank tile was with the value right above
-            tempState = State(temp, len(temp))  # Creating new temp state from temp array
-            check = tempState.state_walk()
+            self.current = State(temp)
+            # check = tempState.state_walk() # Should I do this???
 
+            """
             if check == 1:
                 # Do Something according to the uninformed search
             elif check == 2:
                 # Do something
             elif check == 3:
                 # Do something
-            else:
-                # Something else
-
+            """
 
         # Move down blank space
         if (row + 1) < len(walk_state):
-            temp = self.current.tile_seq[row+1][col]
-            self.current.tile_seq[row+1][col] = 0
-            self.current.tile_seq[row][col] = temp
+            tiletoswitch = temp[row + 1][col]  # The value where the blank tile is in the current state
+            temp[row + 1][col] = self.current.tile_seq[row][col]  # Moving the blank tile up by placing 0 in row-1
+            temp[row][col] = tiletoswitch  # Replacing the spot where the blank tile was with the value right above
+            self.current = State(temp)
+
 
         # Move left blank space
         if (col - 1) >= 0:
-            temp = self.current.tile_seq[row][col-1]
-            self.current.tile_seq[row][col-1] = 0
-            self.current.tile_seq[row][col] = temp
+            tiletoswitch = temp[row][col-1]  # The value where the blank tile is in the current state
+            temp[row][col-1] = self.current.tile_seq[row][col]  # Moving the blank tile up by placing 0 in row-1
+            temp[row][col] = tiletoswitch  # Replacing the spot where the blank tile was with the value right above
+            self.current = State(temp)
 
         # Move right blank space
         if (col + 1) < len(walk_state):
-            temp = self.current.tile_seq[row][col+1]
-            self.current.tile_seq[row][col+1] = 0
-            self.current.tile_seq[row][col] = temp
+            tiletoswitch = temp[row][col+1]  # The value where the blank tile is in the current state
+            temp[row][col+1] = self.current.tile_seq[row][col]  # Moving the blank tile up by placing 0 in row-1
+            temp[row][col] = tiletoswitch  # Replacing the spot where the blank tile was with the value right above
+            self.current = State(temp)
+
+
+        #self.current = State(temp, self.current.depth+1)  # Updating current state given all children were visited.
+        self.current.depth += 1
 
     # Check the following to make it work properly
     def run(self):
