@@ -23,7 +23,7 @@ class EightPuzzleGame:
 
     def start(self):
         # initialize the init state and goal state as 2d array
-        #init_tile = np.array([[2, 3, 6], [1, 4, 8], [7, 5, 0]])
+        # init_tile = np.array([[2, 3, 6], [1, 4, 8], [7, 5, 0]])
         init_tile = np.array([[1, 2, 3], [0, 4, 6], [7, 5, 8]])
 
         init = State(init_tile, 0, 0)

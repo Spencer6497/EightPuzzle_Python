@@ -60,7 +60,8 @@ class UninformedSearchSolver:
     def state_walk(self):
         # add closed state
         self.closed.append(self.current)
-        self.openlist.remove(self.current)
+        if self.openlist.__contains__(self.current):
+            self.openlist.remove(self.current)
         # Move to next state
         walk_state = self.current.tile_seq
         row = 0
@@ -76,25 +77,25 @@ class UninformedSearchSolver:
         self.depth += 1
 
         # Move up blank space
-        temp = [len(self.current.tile_seq)][len(self.current.tile_seq[0])] # Temp 2d array with same dimensions as current.tile_seq
+        # Shallow copy of current.tile_seq
+        temp = self.current.tile_seq
 
-        # Deep copy of the entire array
         if (row - 1) >= 0:
-            for i in range(len(self.current.tile_seq)):
-                for j in range(len(self.current.tile_seq[i])):
-                    temp[i][j] = self.current.tile_seq[i]
-                    j += 1
-                temp[i] = self.current.tile_seq
-                i += 1
+            tiletoswitch = temp[row-1][col]  # The value where the blank tile is in the current state
+            temp[row-1][col] = self.current.tile_seq[row][col]  # Moving the blank tile up by placing 0 in row-1
+            temp[row][col] = tiletoswitch  # Replacing the spot where the blank tile was with the value right above
+            tempState = State(temp, len(temp))  # Creating new temp state from temp array
+            check = tempState.state_walk()
 
-            tileToSwitch = temp[row-1][col] # The value where the blank tile is in the current state
-            temp[row-1][col] = self.current.tile_seq[row][col] # Moving the blank tile up by placing 0 in row-1
-            temp[row][col] = tileToSwitch # Replacing the spot where the blank tile was with the value right above
+            if check == 1:
+                # Do Something according to the uninformed search
+            elif check == 2:
+                # Do something
+            elif check == 3:
+                # Do something
+            else:
+                # Something else
 
-
-            # temp = self.current.tile_seq[row-1][col]
-            # self.current.tile_seq[row-1][col] = 0
-            # self.current.tile_seq[row][col] = temp
 
         # Move down blank space
         if (row + 1) < len(walk_state):
