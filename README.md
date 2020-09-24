@@ -16,8 +16,7 @@ The 8-puzzle game is a game made of 8 tiles in a 3x3 square, leaving one empty s
 7	8	x
 2. Implementation Process and Results
 Here please explain your implementation process steps of your project.
-Step 1: Break down the Informed Search, and get it running
-
+Step 1: Uninformed search algorithm
 
 3. Comparison Analysis
 
