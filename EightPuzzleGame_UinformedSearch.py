@@ -158,7 +158,7 @@ class UninformedSearchSolver:
 
         while not self.current.equals(self.goal):
             self.state_walk()
-            print(self.current.tile_seq)
+            print(np.array(self.current.tile_seq))
             path += 1
 
         print("It took ", path, " iterations")
