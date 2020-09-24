@@ -21,7 +21,12 @@ class State:
 
     def equals(self, obj):
         op = obj.tile_seq
-        comparison = self.tile_seq == op
+        '''
+            The var below returns error "AttributeError: 'bool' object has no attribute 'all'" 
+            since we compare a Python list with a np array
+        '''
+        # comparison = self.tile_seq == op
+        comparison = np.array(self.tile_seq) == op  # Making tile_seq a Numpy array from a Python list to use comp.all()
         return comparison.all()
 
         '''if self.tile_seq == op:
