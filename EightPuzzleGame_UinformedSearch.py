@@ -90,7 +90,7 @@ class UninformedSearchSolver:
                 tiletoswitch = tempUp[row - 1][col]  # The value where the blank tile is in the current state
                 tempUp[row-1][col] = self.current.tile_seq[row][col]  # Moving the blank tile up by placing 0 in row-1
                 tempUp[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
-                s = State(tempUp)  # Creating new state from new configuration
+                s = State(tempUp, self.current.depth+1)  # Creating new state from new configuration
                 check = self.check_inclusive(s)
 
                 # If child is neither on open or closed list, append it to the open list
@@ -99,7 +99,6 @@ class UninformedSearchSolver:
 
             # Move down blank space
             if (row + 1) < len(walk_state):
-
                 for i in range(len(walk_state)):
                     for j in range(len(walk_state[i])):
                         tempDown[i][j] = walk_state[i][j]
@@ -107,7 +106,7 @@ class UninformedSearchSolver:
                 tiletoswitch = tempDown[row + 1][col]  # The value where the blank tile is in the current state
                 tempDown[row + 1][col] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
                 tempDown[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
-                s = State(tempDown)
+                s = State(tempDown, self.current.depth+1)
                 check = self.check_inclusive(s)
 
                 # If child is neither on open or closed list, append it to the open list
@@ -123,7 +122,7 @@ class UninformedSearchSolver:
                 tiletoswitch = tempLeft[row][col - 1]  # The value where the blank tile is in the current state
                 tempLeft[row][col - 1] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
                 tempLeft[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
-                s = State(tempLeft)
+                s = State(tempLeft, self.current.depth+1)
                 check = self.check_inclusive(s)
 
                 # If child is neither on open or closed list, append it to the open list
@@ -139,7 +138,7 @@ class UninformedSearchSolver:
                 tiletoswitch = tempRight[row][col + 1]  # The value where the blank tile is in the current state
                 tempRight[row][col + 1] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
                 tempRight[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
-                s = State(tempRight)
+                s = State(tempRight, self.current.depth+1)
                 check = self.check_inclusive(s)
 
                 # If child is neither on open or closed list, append it to the open list
