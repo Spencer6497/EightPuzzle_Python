@@ -4,6 +4,7 @@ class State:
     tile_seq = []
     depth = 0
     weight = 0
+
     def __init__(self, tile_seq = [], depth = 0, weight = 0):
         self.tile_seq = tile_seq
         self.depth = depth

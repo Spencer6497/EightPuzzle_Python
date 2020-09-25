@@ -234,16 +234,21 @@ class InformedSearchSolver:
 
         # (1) Tiles out of place
         h1 = 0
-        # TODO your code start here
         """
          *loop over the curr_seq
          *check the every entry in curr_seq with goal_seq
+         
+         If a tile is not in it's goal place, sum it to the heuristic estimate.
         """
-        # TODO your code end here
+
+        for i in range(len(curr_seq)):
+            for j in range(len(curr_seq[i])):
+                if curr_seq[i][j] != goal_seq[i][j]:
+                    h1 += 1
+                    break
 
         # (2) Sum of distances out of place
         h2 = 0
-        # TODO your code start here
         """
          *loop over the goal_seq and curr_seq in nested way
          *locate the entry which has the same value in 
@@ -252,7 +257,21 @@ class InformedSearchSolver:
          *of curr_row-goal_row and curr_col-goal_col
          *absoulte value can be calculated by abs(...)
         """
-        # TODO your code end here
+
+        for i in range(len(curr_seq)):
+            for j in range(len(curr_seq[i])):
+                """
+                 If a tile is out of place, iterate through the
+                 goal state and find where it's supposed to be,
+                 then calculate the absolute value of the difference
+                 between them and add it to the heuristic score
+                """
+                if curr_seq[i][j] != goal_seq[i][j]:
+                    for k in range(len(goal_seq)):
+                        for l in range(len(goal_seq[k])):
+                            if curr_seq[i][j] == goal_seq[k][l]:
+                                h2 += (abs(i - k) + abs(j - l))
+                                break
 
         # (3) 2 x the number of direct tile reversals
         h3 = 0
@@ -271,6 +290,7 @@ class InformedSearchSolver:
          *    4             4
          *reversal is 1 2 and 2 1
         """
+
         # TODO your code end here
 
         h3 *= 2
