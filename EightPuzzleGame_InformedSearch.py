@@ -79,6 +79,7 @@ class InformedSearchSolver:
         row = 0
         col = 0
 
+        # Get location where the blank tile is
         for i in range(len(walk_state)):
             for j in range(len(walk_state[i])):
                 if walk_state[i, j] == 0:
@@ -86,31 +87,41 @@ class InformedSearchSolver:
                     col = j
                     break
 
-        self.depth += 1
+        # self.depth += 1 // don't we already do this in each state walk conditional when we create the new state?
+
+        # Generate children of current based on legal moves
+        tempUp = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
+        tempDown = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
+        tempLeft = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
+        tempRight = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
 
         ''' The following program is used to do the state space walk '''
         # ↑ move up
         if (row - 1) >= 0:
-            # TODO your code start here
-            self.current # What do I do with this??
-            temp = np.zeros( len(self.tile_seq) * len(self.tile_seq[0]) )
-            for i in self.current.tile_seq:
-                temp[ i.index() ] = i
-                print( temp )
+
+            for i in range(len(walk_state)):
+                for j in range(len(self.current.tile_seq[i])):
+                    tempUp[i][j] = self.current.tile_seq[i][j]
+
+            tiletoswitch = tempUp[row - 1][col]  # The value where the blank tile is in the current state
+            tempUp[row - 1][col] = self.current.tile_seq[row][col]  # Moving the blank tile up by placing 0 in row-1
+            tempUp[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
+            s = State(tempUp, self.current.depth + 1)  # Creating new state from new configuration
+            check = self.check_inclusive(s)
+
+            # If child not in open or closed
+            if (check[0] == 1):
+                # Assign child heuristic value
+                heuristic_test(s)
+                self.openlist.append(s)
+            # If child in open
+            elif (check[0] == 2):
+
+            # If child in closed
+            elif (check[0] == 3):
+
             """
-             *get the 2d array of current 
-             *define a temp 2d array and loop over current.tile_seq
-             *pass the value from current.tile_seq to temp array
-             *↑ is correspond to (row, col) and (row-1, col)
-             *exchange these two tiles of temp
-             *define a new temp state via temp array
-             *call check_inclusive(temp state)
-             *do the next steps according to flag
-             *if flag = 1 //not in open and closed
-             *begin
-             *assign the child a heuristic value via heuristic_test(temp state);
-             *add the child to open
-             *end;
+             *do the next steps according to flag (check)
              *if flag = 2 //in the open list
              *if the child was reached by a shorter path
              *then give the state on open the shorter path
@@ -125,21 +136,28 @@ class InformedSearchSolver:
 
         # ↓ move down
         if (row + 1) < len(walk_state):
-            # TODO your code start here
+            for i in range(len(walk_state)):
+                for j in range(len(walk_state[i])):
+                    tempDown[i][j] = walk_state[i][j]
+
+            tiletoswitch = tempDown[row + 1][col]  # The value where the blank tile is in the current state
+            tempDown[row + 1][col] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
+            tempDown[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
+            s = State(tempDown, self.current.depth + 1)
+            check = self.check_inclusive(s)
+
+            # If child not in open or closed
+            if (check[0] == 1):
+                # Assign child heuristic value
+                heuristic_test(s)
+                self.openlist.append(s)
+            # If child in open
+            elif (check[0] == 2):
+
+            # If child in closed
+            elif (check[0] == 3):
+
             """
-             *get the 2d array of current 
-             *define a temp 2d array and loop over current.tile_seq
-             *pass the value from current.tile_seq to temp array
-             *↓ is correspond to (row, col) and (row+1, col)
-             *exchange these two tiles of temp
-             *define a new temp state via temp array
-             *call check_inclusive(temp state)
-             *do the next steps according to flag
-             *if flag = 1 //not in open and closed
-             *begin
-             *assign the child a heuristic value via heuristic_test(temp state);
-             *add the child to open
-             *end;
              *if flag = 2 //in the open list
              *if the child was reached by a shorter path
              *then give the state on open the shorter path
@@ -154,21 +172,28 @@ class InformedSearchSolver:
 
         # ← move left
         if (col - 1) >= 0:
-            # TODO your code start here
+            for i in range(len(walk_state)):
+                for j in range(len(walk_state[i])):
+                    tempLeft[i][j] = walk_state[i][j]
+
+            tiletoswitch = tempLeft[row][col - 1]  # The value where the blank tile is in the current state
+            tempLeft[row][col - 1] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
+            tempLeft[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
+            s = State(tempLeft, self.current.depth + 1)
+            check = self.check_inclusive(s)
+
+            # If child not in open or closed
+            if (check[0] == 1):
+                # Assign child heuristic value
+                heuristic_test(s)
+                self.openlist.append(s)
+            # If child in open
+            elif (check[0] == 2):
+
+            # If child in closed
+            elif (check[0] == 3):
+
             """
-             *get the 2d array of current 
-             *define a temp 2d array and loop over current.tile_seq
-             *pass the value from current.tile_seq to temp array
-             *← is correspond to (row, col) and (row, col-1)
-             *exchange these two tiles of temp
-             *define a new temp state via temp array
-             *call check_inclusive(temp state)
-             *do the next steps according to flag
-             *if flag = 1 //not in open and closed
-             *begin
-             *assign the child a heuristic value via heuristic_test(temp state);
-             *add the child to open
-             *end;
              *if flag = 2 //in the open list
              *if the child was reached by a shorter path
              *then give the state on open the shorter path
@@ -183,21 +208,27 @@ class InformedSearchSolver:
 
         # → move right
         if (col + 1) < len(walk_state):
-            # TODO your code start here
+            for i in range(len(walk_state)):
+                for j in range(len(walk_state[i])):
+                    tempRight[i][j] = walk_state[i][j]
+
+            tiletoswitch = tempRight[row][col + 1]  # The value where the blank tile is in the current state
+            tempRight[row][col + 1] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
+            tempRight[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
+            s = State(tempRight, self.current.depth + 1)
+            check = self.check_inclusive(s)
+
+            # If child not in open or closed
+            if (check[0] == 1):
+                # Assign child heuristic value
+                heuristic_test(s)
+                self.openlist.append(s)
+            # If child in open
+            elif (check[0] == 2):
+
+            # If child in closed
+            elif (check[0] == 3):
             """
-             *get the 2d array of current 
-             *define a temp 2d array and loop over current.tile_seq
-             *pass the value from current.tile_seq to temp array
-             *→ is correspond to (row, col) and (row, col+1)
-             *exchange these two tiles of temp
-             *define a new temp state via temp array
-             *call check_inclusive(temp state)
-             *do the next steps according to flag
-             *if flag = 1 //not in open and closed
-             *begin
-             *assign the child a heuristic value via heuristic_test(temp state);
-             *add the child to open
-             *end;
              *if flag = 2 //in the open list
              *if the child was reached by a shorter path
              *then give the state on open the shorter path
