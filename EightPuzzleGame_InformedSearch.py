@@ -306,23 +306,22 @@ class InformedSearchSolver:
 
         # (3) 2 x the number of direct tile reversals
         h3 = 0
-        # TODO your code start here
-        """
-         *loop over the curr_seq
-         *use a Γ(gamma)shap slider to walk throught curr_seq and goal_seq
-         *rule out the entry with value 0
-         *set the boundry restriction
-         *don't forget to time 2 at last
-         *for example 
-         *goal_seq  1 2 3   curr_seq  2 1 3 the Γ shape starts 
-         *       4 5 6          4 5 6
-         *       7 8 0          7 8 0
-         *with 1 2 in goal_seq and 2 1 in curr_seq thus the 
-         *    4             4
-         *reversal is 1 2 and 2 1
-        """
 
-        # TODO your code end here
+        for i in range(len(curr_seq)): # Loop row
+            for j in range(len(curr_seq[i])): # loop col
+                # Check boundary of row
+                if (i + 1) < len(curr_seq):
+                    # Check element is not 0
+                    if curr_seq[i + 1][j] != 0 and curr_seq[i][j] != 0:
+                        if curr_seq[i + 1][j] == goal_seq[i][j] and curr_seq[i][j] == goal_seq[i + 1][j]:
+                            h3 += 1
+
+                # Check boundary of col
+                if (j + 1) < len(curr_seq[i]):
+                    # Check element is not 0
+                    if curr_seq[i][j + 1] != 0 and curr_seq[i][j] != 0:
+                        if curr_seq[i][j + 1] == goal_seq[i][j] and curr_seq[i][j] == goal_seq[i][j + 1]:
+                            h3 += 1
 
         h3 *= 2
 
