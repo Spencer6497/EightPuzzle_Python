@@ -25,6 +25,9 @@ class EightPuzzleGame:
         #init_tile = np.array([[2, 3, 6], [1, 4, 8], [7, 5, 0]])
         init_tile = np.array([[1, 2, 3], [0, 4, 6], [7, 5, 8]])
 
+        # initial state given in prompt for testing
+        #init_tile = np.array([[2, 3, 1], [0, 4, 6], [7, 5, 8]])
+
         init = State(init_tile, 0, 0)
 
         goal_tile = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 0]])

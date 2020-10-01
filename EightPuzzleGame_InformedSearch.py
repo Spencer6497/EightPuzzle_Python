@@ -130,11 +130,11 @@ class InformedSearchSolver:
                     self.openlist.append(s)
                 # If child in open
                 elif (check[0] == 2):
-                    if s.weight < self.current.weight:
-                        self.openlist[check[1]].weight = s.weight
+                    if s.depth < self.openlist[check[1]].depth:
+                        self.openlist[check[1]].depth = s.depth
                 # If child in closed
                 elif (check[0] == 3):
-                    if s.weight < self.current.weight:
+                    if s.depth < self.closed[check[1]].depth:
                         self.openlist.append(self.closed.pop(check[1]))
                 """
                     *do the next steps according to flag (check)
@@ -169,11 +169,11 @@ class InformedSearchSolver:
                     self.openlist.append(s)
                 # If child in open
                 elif (check[0] == 2):
-                    if s.weight < self.current.weight:
-                        self.openlist[check[1]].weight = s.weight
+                    if s.depth < self.openlist[check[1]].depth:
+                        self.openlist[check[1]].depth = s.depth
                 # If child in closed
                 elif (check[0] == 3):
-                    if s.weight < self.current.weight:
+                    if s.depth < self.closed[check[1]].depth:
                         self.openlist.append(self.closed.pop(check[1]))
 
                 """
@@ -208,11 +208,11 @@ class InformedSearchSolver:
                     self.openlist.append(s)
                 # If child in open
                 elif (check[0] == 2):
-                    if s.weight < self.current.weight:
-                        self.openlist[check[1]].weight = s.weight
+                    if s.depth < self.openlist[check[1]].depth:
+                        self.openlist[check[1]].depth = s.depth
                 # If child in closed
                 elif (check[0] == 3):
-                    if s.weight < self.current.weight:
+                    if s.depth < self.closed[check[1]].depth:
                         self.openlist.append(self.closed.pop(check[1]))
 
                 """
@@ -247,11 +247,11 @@ class InformedSearchSolver:
                     self.openlist.append(s)
                     # If child in open
                 elif (check[0] == 2):
-                    if s.weight < self.current.weight:
-                        self.openlist[check[1]].weight = s.weight
+                    if s.depth < self.openlist[check[1]].depth:
+                        self.openlist[check[1]].depth = s.depth
                 # If child in closed
                 elif (check[0] == 3):
-                    if s.weight < self.current.weight:
+                    if s.depth < self.closed[check[1]].depth:
                         self.openlist.append(self.closed.pop(check[1]))
                 """
                  *if flag = 2 //in the open list
