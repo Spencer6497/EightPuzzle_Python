@@ -5,10 +5,11 @@ CSC 425 525 Artificial Intelligence
 Instructor: Dr. Junxiu Zhou
 Semester: Fall 2020
 
-Your name:
+Team name: Give Us an A
 '''
 
 import numpy as np
+import time
 from EightPuzzleGame_State import State
 from EightPuzzleGame_UinformedSearch import UninformedSearchSolver
 from EightPuzzleGame_InformedSearch import InformedSearchSolver
@@ -36,16 +37,32 @@ class EightPuzzleGame:
 
         self.tiles = 8
 
-
+        print("\nBegin uninformed (Breadth-First) search:")
         UIS_solver = UninformedSearchSolver(init, goal)
+        # Time the amount of time it takes to complete computation
+        uStartTime = time.time()
         UIS_solver.run()
+        uEndTime = time.time()
+        uCompTime = uEndTime - uStartTime
+
+        # Print time it took to compute
+        print("\n")
+        print("Took " + uCompTime.__str__() + " seconds to complete.")
 
         print("\n")
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("\n")
+        print("************************************************************")
 
+        print("\nBegin Informed (Best-First) search:")
         IS_solver = InformedSearchSolver(init, goal)
+        # Time computational time
+        iStartTime = time.time()
         IS_solver.run()
+        iEndTime = time.time()
+        iCompTime = iEndTime - iStartTime
+
+        # Print time it took to compute
+        print("\n")
+        print("Took " + iCompTime.__str__() + " seconds to complete.")
 
 # start the puzzle game
 epp = EightPuzzleGame()

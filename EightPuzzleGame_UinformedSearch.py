@@ -151,9 +151,9 @@ class UninformedSearchSolver:
     # Check the following to make it work properly
     def run(self):
         # output the start state
-        print("start state !!!!!")
+        print("\nstart state: \n")
         print(self.current.tile_seq)
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 
         path = 0
 
@@ -162,9 +162,9 @@ class UninformedSearchSolver:
             print(np.array(self.current.tile_seq))
             path += 1
 
-        print("It took ", path, " iterations")
+        print("\nIt took ", path, " iterations")
         print("The length of the path is: ", self.current.depth)
         # output the goal state
         target = self.goal.tile_seq
+        print("\ngoal state:\n")
         print(target)
-        print("goal state !!!!!")
