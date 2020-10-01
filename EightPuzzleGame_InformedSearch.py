@@ -72,178 +72,188 @@ class InformedSearchSolver:
 
     def state_walk(self):
         # add closed state
-        self.closed.append(self.current)
-        self.openlist.remove(self.current)
-        # move to the next heuristic state
-        walk_state = self.current.tile_seq
-        row = 0
-        col = 0
+        if len(self.openlist) > 0:
+            self.current = self.openlist.pop(0)  # Remove leftmost state from open
 
-        # Get location where the blank tile is
-        for i in range(len(walk_state)):
-            for j in range(len(walk_state[i])):
-                if walk_state[i, j] == 0:
-                    row = i
-                    col = j
-                    break
+            # move to the next heuristic state
+            walk_state = self.current.tile_seq
+            row = 0
+            col = 0
 
-        # self.depth += 1 // don't we already do this in each state walk conditional when we create the new state?
-
-        # Generate children of current based on legal moves
-        tempUp = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
-        tempDown = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
-        tempLeft = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
-        tempRight = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
-
-        ''' The following program is used to do the state space walk '''
-        # ↑ move up
-        if (row - 1) >= 0:
-
-            for i in range(len(walk_state)):
-                for j in range(len(self.current.tile_seq[i])):
-                    tempUp[i][j] = self.current.tile_seq[i][j]
-
-            tiletoswitch = tempUp[row - 1][col]  # The value where the blank tile is in the current state
-            tempUp[row - 1][col] = self.current.tile_seq[row][col]  # Moving the blank tile up by placing 0 in row-1
-            tempUp[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
-            s = State(tempUp, self.current.depth + 1)  # Creating new state from new configuration
-            check = self.check_inclusive(s)
-
-            # If child not in open or closed
-            if (check[0] == 1):
-                # Assign child heuristic value
-                heuristic_test(s)
-                self.openlist.append(s)
-            # If child in open
-            elif (check[0] == 2):
-
-            # If child in closed
-            elif (check[0] == 3):
-
-            """
-             *do the next steps according to flag (check)
-             *if flag = 2 //in the open list
-             *if the child was reached by a shorter path
-             *then give the state on open the shorter path
-             *if flag = 3 //in the closed list
-             *if the child was reached by a shorter path then
-             *begin
-             *remove the state from closed;
-             *add the child to open
-             *end;
-            """
-            # TODO your code end here
-
-        # ↓ move down
-        if (row + 1) < len(walk_state):
+            # Get location where the blank tile is
             for i in range(len(walk_state)):
                 for j in range(len(walk_state[i])):
-                    tempDown[i][j] = walk_state[i][j]
+                    if walk_state[i][j] == 0:
+                        row = i
+                        col = j
+                        break
 
-            tiletoswitch = tempDown[row + 1][col]  # The value where the blank tile is in the current state
-            tempDown[row + 1][col] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
-            tempDown[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
-            s = State(tempDown, self.current.depth + 1)
-            check = self.check_inclusive(s)
+            # Generate children of current based on legal moves
+            tempUp = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
+            tempDown = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
+            tempLeft = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
+            tempRight = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
 
-            # If child not in open or closed
-            if (check[0] == 1):
-                # Assign child heuristic value
-                heuristic_test(s)
-                self.openlist.append(s)
-            # If child in open
-            elif (check[0] == 2):
+            ''' The following program is used to do the state space walk '''
+            # ↑ move up
+            if (row - 1) >= 0:
+                for i in range(len(walk_state)):
+                    for j in range(len(self.current.tile_seq[i])):
+                        tempUp[i][j] = self.current.tile_seq[i][j]
 
-            # If child in closed
-            elif (check[0] == 3):
+                tiletoswitch = tempUp[row - 1][col]  # The value where the blank tile is in the current state
+                tempUp[row - 1][col] = self.current.tile_seq[row][col]  # Moving the blank tile up by placing 0 in row-1
+                tempUp[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
+                s = State(tempUp, self.current.depth + 1)  # Creating new state from new configuration
+                check = self.check_inclusive(s)
 
-            """
-             *if flag = 2 //in the open list
-             *if the child was reached by a shorter path
-             *then give the state on open the shorter path
-             *if flag = 3 //in the closed list
-             *if the child was reached by a shorter path then
-             *begin
-             *remove the state from closed;
-             *add the child to open
-             *end;
-            """
-            # TODO your code end here
+                # If child not in open or closed
+                if (check[0] == 1):
+                    # Assign child heuristic value
+                    self.heuristic_test(s)
+                    self.openlist.append(s)
+                # If child in open
+                elif (check[0] == 2):
+                    if s.weight < self.current.weight:
+                        self.openlist[check[1]].weight = s.weight
+                # If child in closed
+                elif (check[0] == 3):
+                    if s.weight < self.current.weight:
+                        self.openlist.append(self.closed.pop(check[1]))
+                """
+                    *do the next steps according to flag (check)
+                    *if flag = 2 //in the open list
+                    *if the child was reached by a shorter path
+                    *then give the state on open the shorter path
+                    *if flag = 3 //in the closed list
+                    *if the child was reached by a shorter path then
+                     begin
+                    *remove the state from closed;
+                    *add the child to open
+                    *end;
+                """
+                # TODO your code end here
 
-        # ← move left
-        if (col - 1) >= 0:
-            for i in range(len(walk_state)):
-                for j in range(len(walk_state[i])):
-                    tempLeft[i][j] = walk_state[i][j]
+            # ↓ move down
+            if (row + 1) < len(walk_state):
+                for i in range(len(walk_state)):
+                    for j in range(len(walk_state[i])):
+                        tempDown[i][j] = walk_state[i][j]
 
-            tiletoswitch = tempLeft[row][col - 1]  # The value where the blank tile is in the current state
-            tempLeft[row][col - 1] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
-            tempLeft[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
-            s = State(tempLeft, self.current.depth + 1)
-            check = self.check_inclusive(s)
+                tiletoswitch = tempDown[row + 1][col]  # The value where the blank tile is in the current state
+                tempDown[row + 1][col] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
+                tempDown[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
+                s = State(tempDown, self.current.depth + 1)
+                check = self.check_inclusive(s)
 
-            # If child not in open or closed
-            if (check[0] == 1):
-                # Assign child heuristic value
-                heuristic_test(s)
-                self.openlist.append(s)
-            # If child in open
-            elif (check[0] == 2):
+                # If child not in open or closed
+                if (check[0] == 1):
+                    # Assign child heuristic value
+                    self.heuristic_test(s)
+                    self.openlist.append(s)
+                # If child in open
+                elif (check[0] == 2):
+                    if s.weight < self.current.weight:
+                        self.openlist[check[1]].weight = s.weight
+                # If child in closed
+                elif (check[0] == 3):
+                    if s.weight < self.current.weight:
+                        self.openlist.append(self.closed.pop(check[1]))
 
-            # If child in closed
-            elif (check[0] == 3):
+                """
+                 *if flag = 2 //in the open list
+                 *if the child was reached by a shorter path
+                 *then give the state on open the shorter path
+                 *if flag = 3 //in the closed list
+                 *if the child was reached by a shorter path then
+                 *begin
+                 *remove the state from closed;
+                 *add the child to open
+                 *end;
+                """
+                # TODO your code end here
 
-            """
-             *if flag = 2 //in the open list
-             *if the child was reached by a shorter path
-             *then give the state on open the shorter path
-             *if flag = 3 //in the closed list
-             *if the child was reached by a shorter path then
-             *begin
-             *remove the state from closed;
-             *add the child to open
-             *end;
-            """
-            # TODO your code end here
+            # ← move left
+            if (col - 1) >= 0:
+                for i in range(len(walk_state)):
+                    for j in range(len(walk_state[i])):
+                        tempLeft[i][j] = walk_state[i][j]
 
-        # → move right
-        if (col + 1) < len(walk_state):
-            for i in range(len(walk_state)):
-                for j in range(len(walk_state[i])):
-                    tempRight[i][j] = walk_state[i][j]
+                tiletoswitch = tempLeft[row][col - 1]  # The value where the blank tile is in the current state
+                tempLeft[row][col - 1] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
+                tempLeft[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
+                s = State(tempLeft, self.current.depth + 1)
+                check = self.check_inclusive(s)
 
-            tiletoswitch = tempRight[row][col + 1]  # The value where the blank tile is in the current state
-            tempRight[row][col + 1] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
-            tempRight[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
-            s = State(tempRight, self.current.depth + 1)
-            check = self.check_inclusive(s)
+                # If child not in open or closed
+                if (check[0] == 1):
+                    # Assign child heuristic value
+                    self.heuristic_test(s)
+                    self.openlist.append(s)
+                # If child in open
+                elif (check[0] == 2):
+                    if s.weight < self.current.weight:
+                        self.openlist[check[1]].weight = s.weight
+                # If child in closed
+                elif (check[0] == 3):
+                    if s.weight < self.current.weight:
+                        self.openlist.append(self.closed.pop(check[1]))
 
-            # If child not in open or closed
-            if (check[0] == 1):
-                # Assign child heuristic value
-                heuristic_test(s)
-                self.openlist.append(s)
-            # If child in open
-            elif (check[0] == 2):
+                """
+                 *if flag = 2 //in the open list
+                 *if the child was reached by a shorter path
+                 *then give the state on open the shorter path
+                 *if flag = 3 //in the closed list
+                 *if the child was reached by a shorter path then
+                 *begin
+                 *remove the state from closed;
+                 *add the child to open
+                 *end;
+                """
+                # TODO your code end here
 
-            # If child in closed
-            elif (check[0] == 3):
-            """
-             *if flag = 2 //in the open list
-             *if the child was reached by a shorter path
-             *then give the state on open the shorter path
-             *if flag = 3 //in the closed list
-             *if the child was reached by a shorter path then
-             *begin
-             *remove the state from closed;
-             *add the child to open
-             *end;
-            """
-            # TODO your code end here
+            # → move right
+            if (col + 1) < len(walk_state):
+                for i in range(len(walk_state)):
+                    for j in range(len(walk_state[i])):
+                        tempRight[i][j] = walk_state[i][j]
 
-        # sort the open list first by h(n) then g(n)
-        self.openlist.sort(key=self.sortFun)
-        self.current = self.openlist[0]
+                tiletoswitch = tempRight[row][col + 1]  # The value where the blank tile is in the current state
+                tempRight[row][col + 1] = self.current.tile_seq[row][col]  # Moving blank tile up by placing 0 in row-1
+                tempRight[row][col] = tiletoswitch  # Replacing spot where the blank tile was with the value right above
+                s = State(tempRight, self.current.depth + 1)
+                check = self.check_inclusive(s)
+
+                # If child not in open or closed
+                if (check[0] == 1):
+                    # Assign child heuristic value
+                    self.heuristic_test(s)
+                    self.openlist.append(s)
+                    # If child in open
+                elif (check[0] == 2):
+                    if s.weight < self.current.weight:
+                        self.openlist[check[1]].weight = s.weight
+                # If child in closed
+                elif (check[0] == 3):
+                    if s.weight < self.current.weight:
+                        self.openlist.append(self.closed.pop(check[1]))
+                """
+                 *if flag = 2 //in the open list
+                 *if the child was reached by a shorter path
+                 *then give the state on open the shorter path
+                 *if flag = 3 //in the closed list
+                 *if the child was reached by a shorter path then
+                 *begin
+                 *remove the state from closed;
+                 *add the child to open
+                 *end;
+                """
+                # TODO your code end here
+
+            # sort the open list first by h(n) then g(n)
+            self.openlist.sort(reverse=False, key=self.sortFun)
+
+            self.closed.append(self.current)
 
     """
      * Solve the game using heuristic search strategies
@@ -338,7 +348,7 @@ class InformedSearchSolver:
 
         while not self.current.equals(self.goal):
             self.state_walk()
-            print(self.current.tile_seq)
+            print(np.array(self.current.tile_seq))
             path += 1
 
         print("It took ", path, " iterations")
