@@ -71,32 +71,48 @@ class InformedSearchSolver:
     """
 
     def state_walk(self):
-        # add closed state
-        if len(self.openlist) > 0:
-            self.current = self.openlist.pop(0)  # Remove leftmost state from open
+        self.closed.append(self.current)
+        self.openlist.remove(self.current)
 
-            # move to the next heuristic state
-            walk_state = self.current.tile_seq
-            row = 0
-            col = 0
+        walk_state = self.current.tile_seq
+        row = 0
+        col = 0
 
-            # Get location where the blank tile is
-            for i in range(len(walk_state)):
-                for j in range(len(walk_state[i])):
-                    if walk_state[i][j] == 0:
-                        row = i
-                        col = j
-                        break
+        # Get location where the blank tile is
+        for i in range(len(walk_state)):
+            for j in range(len(walk_state[i])):
+                if walk_state[i][j] == 0:
+                    row = i
+                    col = j
+                    break
 
-            # Generate children of current based on legal moves
-            tempUp = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
-            tempDown = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
-            tempLeft = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
-            tempRight = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
+        self.depth += 1
+        """ add closed state
+            if len(self.openlist) > 0:
+                self.current = self.openlist.pop(0)  # Remove leftmost state from open
+    
+                # move to the next heuristic state
+                walk_state = self.current.tile_seq
+                row = 0
+                col = 0
+    
+                # Get location where the blank tile is
+                for i in range(len(walk_state)):
+                    for j in range(len(walk_state[i])):
+                        if walk_state[i][j] == 0:
+                            row = i
+                            col = j
+                            break
+            """
+        # Generate children of current based on legal moves
+        tempUp = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
+        tempDown = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
+        tempLeft = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
+        tempRight = [[None for j in range(len(walk_state))] for i in range(len(walk_state))]
 
-            ''' The following program is used to do the state space walk '''
-            # ↑ move up
-            if (row - 1) >= 0:
+        ''' The following program is used to do the state space walk '''
+        # ↑ move up
+        if (row - 1) >= 0:
                 for i in range(len(walk_state)):
                     for j in range(len(self.current.tile_seq[i])):
                         tempUp[i][j] = self.current.tile_seq[i][j]
@@ -135,7 +151,7 @@ class InformedSearchSolver:
                 # TODO your code end here
 
             # ↓ move down
-            if (row + 1) < len(walk_state):
+        if (row + 1) < len(walk_state):
                 for i in range(len(walk_state)):
                     for j in range(len(walk_state[i])):
                         tempDown[i][j] = walk_state[i][j]
@@ -174,7 +190,7 @@ class InformedSearchSolver:
                 # TODO your code end here
 
             # ← move left
-            if (col - 1) >= 0:
+        if (col - 1) >= 0:
                 for i in range(len(walk_state)):
                     for j in range(len(walk_state[i])):
                         tempLeft[i][j] = walk_state[i][j]
@@ -213,7 +229,7 @@ class InformedSearchSolver:
                 # TODO your code end here
 
             # → move right
-            if (col + 1) < len(walk_state):
+        if (col + 1) < len(walk_state):
                 for i in range(len(walk_state)):
                     for j in range(len(walk_state[i])):
                         tempRight[i][j] = walk_state[i][j]
@@ -251,9 +267,10 @@ class InformedSearchSolver:
                 # TODO your code end here
 
             # sort the open list first by h(n) then g(n)
-            self.openlist.sort(reverse=False, key=self.sortFun)
 
-            self.closed.append(self.current)
+        self.openlist.sort(key=self.sortFun)
+        self.current = self.openlist[0]
+
 
     """
      * Solve the game using heuristic search strategies
@@ -286,7 +303,6 @@ class InformedSearchSolver:
             for j in range(len(curr_seq[i])):
                 if curr_seq[i][j] != goal_seq[i][j]:
                     h1 += 1
-                    break
 
         # (2) Sum of distances out of place
         h2 = 0
@@ -312,7 +328,6 @@ class InformedSearchSolver:
                         for l in range(len(goal_seq[k])):
                             if curr_seq[i][j] == goal_seq[k][l]:
                                 h2 += (abs(i - k) + abs(j - l))
-                                break
 
         # (3) 2 x the number of direct tile reversals
         h3 = 0
@@ -343,6 +358,7 @@ class InformedSearchSolver:
         # output the start state
         print("start state !!!!!")
         print(self.current.tile_seq)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         path = 0
 

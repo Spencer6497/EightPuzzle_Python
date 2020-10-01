@@ -33,8 +33,13 @@ class EightPuzzleGame:
 
         self.tiles = 8
 
+
         UIS_solver = UninformedSearchSolver(init, goal)
         UIS_solver.run()
+
+        print("\n")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("\n")
 
         IS_solver = InformedSearchSolver(init, goal)
         IS_solver.run()

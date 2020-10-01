@@ -153,6 +153,7 @@ class UninformedSearchSolver:
         # output the start state
         print("start state !!!!!")
         print(self.current.tile_seq)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         path = 0
 
